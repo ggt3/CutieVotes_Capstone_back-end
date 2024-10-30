@@ -9,5 +9,8 @@ will run `nodemon index.js`
 * Express
 * Mongoose
 
+### Articles consulted
+[DigitalOcean Auth](https://www.digitalocean.com/community/tutorials/how-to-add-login-authentication-to-react-applications)
+
 ### Feature to-do's
 - [ ] user auth routes
