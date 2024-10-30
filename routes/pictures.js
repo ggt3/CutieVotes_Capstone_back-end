@@ -1,6 +1,6 @@
 import express from "express";
 import Picture from "../models/picture.js";
-
+import User from "../models/User.js";
 const pictureRouter = new express.Router();
 
 pictureRouter.get("/test", (req, res) => {
@@ -18,14 +18,14 @@ pictureRouter.get("/", async (req, res) => {
   }
 });
 pictureRouter.get("/top", async (req, res) => {
-    try {
-      const pictures = await Picture.find().sort({totalLikes:-1}).limit(20);
-      console.log("top 20 pics");
-      res.send(pictures);
-    } catch (error) {
-      console.log(error);
-    }
-  });
+  try {
+    const pictures = await Picture.find().sort({ totalLikes: -1 }).limit(20);
+    console.log("top 20 pics");
+    res.send(pictures);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 //add a picture
 //check if there are date.now pictures - if not pull from cat api, if yes return the 3
@@ -64,26 +64,37 @@ pictureRouter.get("/add", async (req, res) => {
 //for testing on stable entries
 pictureRouter.get("/add/static", async (req, res) => {
   try {
-    const pictures = await Picture.find().sort({x:1}).limit(2) //2 oldest to newest entries
-    res.send(pictures)
+    const pictures = await Picture.find().sort({ x: 1 }).limit(2); //2 oldest to newest entries
+    res.send(pictures);
   } catch (e) {
     console.error("error");
   }
 });
-//add a vote to a picture
+
+//add a vote to a picture - send user in the request
 pictureRouter.post("/:id/upvote", async (req, res) => {
   try {
-    console.log(req.params.id)
+    const user = req.query.user;
+    const pictureId = req.params.id;
+    if (user) {
+      const updatedUser = await User.findOneAndUpdate(
+        { username: user },
+        { $addToSet: { likedPictures: pictureId } }, // Add pictureId to likedPictures
+        { new: true } // Return the updated document
+      );
+      console.log("added to liked photos of ", updatedUser)
+    }
+
     const updatedPicture = await Picture.findByIdAndUpdate(
-      req.params.id, // The ID of the picture to update
+      pictureId, // The ID of the picture to update
       { $inc: { totalLikes: 1 } }, // Increment likes by 1
       { new: true } // Return the updated document
     );
 
     if (!updatedPicture) {
       console.log("Picture not found");
-      res.status(404).send("picture not found")
-        return null;
+      res.status(404).send("picture not found");
+      return null;
     }
 
     console.log("adding vote to picture:", req.params.id);

@@ -14,8 +14,23 @@ userRouter.get("/", async (req, res) => {
   }
 });
 
+//create a new user
+userRouter.post('/new', async (req,res) => {
+    try{
+        const newUser = await User.create(req.body)
+   
+    if (newUser) {
+        res.status(201).json({ user: newUser });
+      } else {
+        res.status(400).json({ message: "Error creating new user" });
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
+
 //get all photos that a user liked
-userRouter.get("/:username/likes", async (req, res) => {
+userRouter.get("/:username/liked", async (req, res) => {
   try {
     const user = await User.findOne({ username: req.params.username })
       .populate("likedPictures")
@@ -59,4 +74,5 @@ userRouter.delete("/:username", async (req, res) => {
       console.log("Error deleting user:", error);
     }
   });
+
 export default userRouter;
