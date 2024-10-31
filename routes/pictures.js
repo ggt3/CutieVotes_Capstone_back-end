@@ -1,5 +1,5 @@
 import express from "express";
-import Picture from "../models/picture.js";
+import Picture from "../models/Picture.js"
 import User from "../models/User.js";
 const pictureRouter = new express.Router();
 
