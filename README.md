@@ -11,6 +11,9 @@ will run `nodemon index.js`
 
 ### Articles consulted
 [DigitalOcean Auth](https://www.digitalocean.com/community/tutorials/how-to-add-login-authentication-to-react-applications)
+[Dhiwise](https://www.dhiwise.com/post/how-authprovider-enhances-user-authentication-in-react)
+[dev.to](https://dev.to/miracool/how-to-manage-user-authentication-with-react-js-3ic5)
 
 ### Feature to-do's
-- [ ] user auth routes
+- [X] user auth routes
+- [ ] send actual tokens for secure access / check db

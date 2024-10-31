@@ -71,6 +71,16 @@ pictureRouter.get("/add/static", async (req, res) => {
   }
 });
 
+//get two random photos
+pictureRouter.get("/compare", async (req, res) => {
+    try {
+      const pictures = await Picture.aggregate([{ $sample: { size: 2 } }]);
+      res.send(pictures);
+    } catch (e) {
+      console.error("error");
+    }
+  });
+
 //add a vote to a picture - send user in the request
 pictureRouter.post("/:id/upvote", async (req, res) => {
   try {

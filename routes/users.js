@@ -18,7 +18,7 @@ userRouter.get("/", async (req, res) => {
 userRouter.post('/new', async (req,res) => {
     try{
         const newUser = await User.create(req.body)
-   
+        
     if (newUser) {
         res.status(201).json({ user: newUser });
       } else {
@@ -39,9 +39,10 @@ userRouter.get("/:username/liked", async (req, res) => {
     if (!user) {
       throw new Error("User not found");
     }
-    return user.likedPictures;
+    console.log("found user", user.likedPictures)
+    res.send(user.likedPictures);
   } catch (error) {
-    console.log("error getting user likes",error);
+    console.log("error getting user's likes",error);
   }
 });
 
